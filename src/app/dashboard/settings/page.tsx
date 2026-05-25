@@ -88,18 +88,16 @@ function getStatusMessage(
 
 function SettingsPageFallback() {
   return (
-    <div className="min-h-screen bg-[var(--background)] p-4 md:p-8 text-[var(--foreground)] transition-colors">
-      <div className="max-w-2xl mx-auto">
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-6">
-          <div className="h-8 w-48 bg-[var(--card-muted)] rounded animate-pulse mb-4" />
-          <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="h-20 bg-[var(--card-muted)] rounded animate-pulse"
-              />
-            ))}
-          </div>
+    <div className="max-w-2xl mx-auto">
+      <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-6">
+        <div className="h-8 w-48 bg-[var(--card-muted)] rounded animate-pulse mb-4" />
+        <div className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="h-20 bg-[var(--card-muted)] rounded animate-pulse"
+            />
+          ))}
         </div>
       </div>
     </div>
@@ -375,18 +373,16 @@ function SettingsPageContent() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="min-h-screen bg-[var(--background)] p-4 md:p-8 text-[var(--foreground)] transition-colors">
-        <div className="max-w-2xl mx-auto">
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-6">
-            <div className="h-8 w-48 bg-[var(--card-muted)] rounded animate-pulse mb-4" />
-            <div className="space-y-4">
-              {[1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  className="h-20 bg-[var(--card-muted)] rounded animate-pulse"
-                />
-              ))}
-            </div>
+      <div className="max-w-2xl mx-auto">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-6">
+          <div className="h-8 w-48 bg-[var(--card-muted)] rounded animate-pulse mb-4" />
+          <div className="space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-20 bg-[var(--card-muted)] rounded animate-pulse"
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -395,12 +391,10 @@ function SettingsPageContent() {
 
   if (!settings) {
     return (
-      <div className="min-h-screen bg-[var(--background)] p-4 md:p-8 text-[var(--foreground)] transition-colors">
-        <div className="max-w-2xl mx-auto">
-          <p className="text-[var(--muted-foreground)]">
-            Failed to load settings.
-          </p>
-        </div>
+      <div className="max-w-2xl mx-auto">
+        <p className="text-[var(--muted-foreground)]">
+          Failed to load settings.
+        </p>
       </div>
     );
   }
@@ -408,25 +402,13 @@ function SettingsPageContent() {
   return (
     <div className="min-h-screen bg-[var(--background)] p-4 md:p-8 text-[var(--foreground)] transition-colors">
       <div className="max-w-2xl mx-auto">
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <Link href="/dashboard">
-            <button className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--accent)] md:bg-[var(--accent)] md:text-[var(--accent-foreground)] transition-all hover:opacity-90 active:scale-95 md:h-auto md:w-auto md:rounded-lg md:px-4 md:py-2">
-              <span className="text-lg items-center transition-transform duration-200 group-hover:-translate-x-1.5">
-                ←
-              </span>
-              <span className="ml-2 hidden text-sm font-medium md:inline">
-                Back to Dashboard
-              </span>
-            </button>
-          </Link>
-          <div className="sm:text-left mr-2">
-            <h1 className="text-3xl pl-2 text-center font-bold text-[var(--foreground)]">
-              Settings
-            </h1>
-            <p className="md:text-right text-center mt-2 text-[var(--muted-foreground)]">
-              Manage your profile and preferences
-            </p>
-          </div>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-[var(--foreground)]">
+            Settings
+          </h1>
+          <p className="mt-2 text-[var(--muted-foreground)]">
+            Manage your profile and preferences
+          </p>
         </div>
 
         {statusMessage && (
@@ -733,26 +715,6 @@ function SettingsPageContent() {
         </div>
 
         <PrivacySettings />
-        <div className="mt-4 flex justify-center items-center pt-6">
-          <Link href="/dashboard">
-            <button className="group inline-flex items-center justify-center rounded-lg border border-[var(--accent)] bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-[var(--accent-foreground)] transition-all hover:opacity-90 active:scale-95">
-              <span className="mr-2 transition-transform duration-200 group-hover:-translate-x-1.5">
-                ←
-              </span>
-              Back to Dashboard
-            </button>
-          </Link>
-        </div>
-
-        <ConfirmModal
-          isOpen={showConfirmModal}
-          title="Unsaved Changes"
-          message="You have unsaved changes in your settings. If you leave now, your progress will be lost."
-          confirmLabel="Leave Anyway"
-          cancelLabel="Stay and Save"
-          onConfirm={handleConfirmLeave}
-          onCancel={handleCancelLeave}
-        />
       </div>
     </div>
   );

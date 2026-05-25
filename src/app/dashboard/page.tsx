@@ -1,5 +1,10 @@
 import DiscussionsWidget from "@/components/DiscussionsWidget";
+import ActivityRingChart from "@/components/ActivityRingChart";
+import ContributionGraph from "@/components/ContributionGraph";
+import ContributionHeatmap from "@/components/ContributionHeatmap";
+import PRMetrics from "@/components/PRMetrics";
 import CommunityMetrics from "@/components/CommunityMetrics";
+import PRBreakdownChart from "@/components/PRBreakdownChart";
 import GoalTracker from "@/components/GoalTracker";
 import DashboardHeader from "@/components/DashboardHeader";
 import StreakTracker from "@/components/StreakTracker";
@@ -7,10 +12,12 @@ import TopRepos from "@/components/TopRepos";
 import PinnedRepos from "@/components/PinnedRepos";
 import InactiveRepositoriesCard from "@/components/InactiveRepositoriesCard";
 import LanguageBreakdown from "@/components/LanguageBreakdown";
+import CommitTimeChart from "@/components/CommitTimeChart";
+import CodingActivityInsightsCard from "@/components/CodingActivityInsightsCard";
+import PRReviewTrendChart from "@/components/PRReviewTrendChart";
 import CIAnalytics from "@/components/CIAnalytics";
 import IssueMetrics from "@/components/IssueMetrics";
 import StreakAtRiskBanner from "@/components/StreakAtRiskBanner";
-import RepoAnalyticsExplorer from "@/components/repo-analytics/RepoAnalyticsExplorer";
 import dynamic from "next/dynamic";
 
 const SkeletonCard = () => (
@@ -89,7 +96,7 @@ import ExportButton from "@/components/ExportButton";
 import Link from "next/link";
 import PersonalRecords from "@/components/PersonalRecords";
 import LocalCodingTime from "@/components/LocalCodingTime";
-import CodingTimeWidget from "@/components/CodingTimeWidget";
+import CodingTimeCard from "@/components/CodingTimeCard";
 import RecentActivity from "@/components/RecentActivity";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
@@ -99,32 +106,28 @@ import DashboardSSEProvider from "@/components/DashboardSSEProvider";
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/");
-  // If the JWT callback detected that the GitHub token has been revoked,
-  // redirect to the landing page so the user must re-authenticate.
   if (session.error === "TokenRevoked") redirect("/");
 
   return (
     <DashboardSSEProvider>
       <div className="min-h-screen bg-[var(--background)] p-4 text-[var(--foreground)] transition-colors md:p-8">
         <DashboardHeader />
-        <div className="mb-6 flex flex-wrap items-stretch justify-center gap-2 sm:justify-end">
-          <Link
-            href="/wrapped"
-            className="flex min-w-0 flex-1 items-center justify-center rounded-lg border border-[var(--accent)] bg-[var(--accent-soft)] px-4 py-2 text-center text-sm font-semibold text-[var(--accent)] transition-opacity hover:opacity-90 sm:min-w-[140px] sm:flex-none"
-          >
-            Year in Code
-          </Link>
-          <Link
-            href="/dashboard/settings"
-            className="secondary-button flex min-w-0 flex-1 items-center justify-center rounded-xl px-4 py-2 text-center text-sm font-medium sm:min-w-[140px] sm:flex-none"
-          >
-            Settings
-          </Link>
-          <div className="w-full sm:w-auto">
-            <ExportButton />
-          </div>
-        </div>
-        <StreakAtRiskBanner />
+      <div className="mb-6 flex justify-end items-center gap-2">
+        <Link
+          href="/wrapped"
+          className="rounded-lg border border-[var(--accent)] bg-[var(--accent-soft)] px-4 py-2 text-sm font-semibold text-[var(--accent)] hover:opacity-90 transition-opacity min-w-[140px] flex items-center justify-center"
+        >
+          Year in Code
+        </Link>
+        <Link
+          href="/dashboard/settings"
+          className="secondary-button flex min-w-[140px] items-center justify-center rounded-xl px-4 py-2 text-sm font-medium"
+        >
+          Settings
+        </Link>
+        <ExportButton />
+      </div>
+      <StreakAtRiskBanner />
 
       <div className="mb-6 mt-6">
         <Link href="/wrapped">
@@ -142,19 +145,6 @@ export default async function DashboardPage() {
         </Link>
       </div>
 
-      <div className="mb-6">
-        <WeeklySummaryCard />
-      </div>
-
-      <div className="mb-6">
-        <AIMentorWidget />
-      </div>
-
-      <div className="mb-6">
-        <PersonalRecords />
-      </div>
-
-      {/* Row 1: Contribution graph + Streak + Local Coding Time */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <ContributionGraph />
@@ -164,72 +154,15 @@ export default async function DashboardPage() {
           <div className="mt-6">
             <FriendComparison />
           </div>
-          <div className="mt-6">
-            <RepoAnalyticsExplorer />
-          </div>
         </div>
 
         <div>
           <StreakTracker />
           <LocalCodingTime />
           <div className="mt-6">
-            <CodingTimeWidget />
+            <CodingTimeCard />
           </div>
         </div>
-      </div>
-
-      {/* Row 2: PR metrics, community metrics, PR breakdown & Time Chart */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        <PRMetrics />
-        <CommunityMetrics />
-        <PRBreakdownChart />
-        <CommitTimeChart />
-      </div>
-      {/* Row 2b: Activity Ring Chart */}
-      <div className="mt-6">
-        <ActivityRingChart />
-      </div>
-
-      <div className="mt-6">
-        <CodingActivityInsightsCard />
-      </div>
-
-      <div className="mt-6">
-        <PRReviewTrendChart />
-      </div>
-
-      {/* Row 3: Issue metrics + CI analytics */}
-      <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <IssueMetrics />
-        </div>
-        <CIAnalytics />
-      </div>
-      {/* Row 3b: Discussion activity */}
-      <div className="mt-6">
-        <DiscussionsWidget />
-      </div>
-
-      {/* Row 4: Pinned repositories */}
-      <div className="mt-6">
-        <PinnedRepos />
-      </div>
-
-      {/* Row 5: Inactive repository reminder */}
-      <div className="mt-6">
-        <InactiveRepositoriesCard />
-      </div>
-
-      {/* Row 6: Top repos + Language breakdown + Goal tracker */}
-      <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <TopRepos />
-        <LanguageBreakdown />
-        <GoalTracker />
-      </div>
-
-      {/* Row 7: Recent GitHub activity */}
-      <div className="mt-6">
-        <RecentActivity />
       </div>
     </div>
     </DashboardSSEProvider>

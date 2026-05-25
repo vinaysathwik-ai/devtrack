@@ -9,7 +9,13 @@ import ThemeToggle from "@/components/ThemeToggle";
 import UserAvatar from "@/components/UserAvatar";
 import KeyboardShortcuts from "@/components/KeyboardShortcuts";
 
-export default function DashboardHeader() {
+export default function DashboardHeader({
+  title = "Dashboard",
+  description = "Your coding activity at a glance 🚀",
+}: {
+  title?: string;
+  description?: string;
+}) {
   const { data: session } = useSession();
   const [isPublic, setIsPublic] = useState<boolean | null>(null);
 
@@ -44,14 +50,12 @@ export default function DashboardHeader() {
 
         {/* Left Section */}
         <div>
-          <h1 className="bg-gradient-to-r from-[var(--foreground)] via-[var(--foreground)] to-[var(--accent)] bg-clip-text text-3xl font-extrabold text-transparent md:text-4xl">
+          <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-[var(--foreground)] to-[var(--accent)] bg-clip-text text-transparent">
             Dashboard
           </h1>
-          <p
-            className="mt-2 text-xs text-[var(--muted-foreground)]"
-            style={{ fontFamily: "var(--font-jetbrains, ui-monospace, monospace)", letterSpacing: "0.06em" }}
-          >
-            coding activity at a glance
+
+          <p className="mt-2 text-sm md:text-base text-[var(--muted-foreground)]">
+            Your coding activity at a glance 🚀
           </p>
         </div>
 
